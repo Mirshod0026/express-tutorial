@@ -10,14 +10,14 @@ const books = [];
 
 // GET /users
 
-app.get("/users", (req,res) => {
-  res.send("users")
-})
+app.get('/users', (req, res) => {
+  res.send('users');
+});
 // POST /users
 
-app.post("/users",(req,res) =>{
-  res.send("Create user")
-})
+app.post('/users', (req, res) => {
+  res.send('Create user');
+});
 // GET /books
 
 app.get('/books', (req, res) => {
