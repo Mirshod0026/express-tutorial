@@ -6,7 +6,7 @@ app.get('/', (req, res) => {
   res.send('Hello Node.js');
 });
 
-const books = []
+const books = [];
 
 // GET /users
 
@@ -14,14 +14,14 @@ const books = []
 
 // GET /books
 
-app.get('/books',(req,res) => {
-  res.send(books)
-})
+app.get('/books', (req, res) => {
+  res.send(books);
+});
 
 // POST /books
 
-app.post('/books',(req,res) =>{
-  res.send('create book logic')
-})
+app.post('/books', (req, res) => {
+  res.send('create book logic');
+});
 
 app.listen(3000, () => console.log('server run on port:3000'));
