@@ -1,6 +1,16 @@
 const express = require('express');
+const mongoose  = require('mongoose');
 
 const app = express();
+
+mongoose
+  .connect('mongodb://localhost/teamproject')
+  .then( () => {
+    console.log('Connected database...');
+  })
+  .catch( (error) => console.log('Mongodb error', error))
+
+
 
 app.get('/', (req, res) => {
   res.send('Hello Node.js');
