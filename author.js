@@ -36,4 +36,6 @@ async function getAuthorById(id) {
 
 }
 
-createAuthor('Mirshod');
+async function updateAuthor() {
+    // test uchun yozib kordim
+}
