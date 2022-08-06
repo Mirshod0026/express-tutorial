@@ -32,10 +32,11 @@ async function getAuthor() {
 async function getAuthorById(id) {
     const author = await authorModel.findById(id)
 
+    if (!author) {
+        return console.log('Author not found!');
+    }
+
     // console.log(author);
 
 }
 
-async function updateAuthor() {
-    // test uchun yozib kordim
-}
