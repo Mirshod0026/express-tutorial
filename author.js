@@ -6,7 +6,7 @@ const authorSchem = {
     books: [
         {
             type: mongoose.Types.ObjectId,
-// bu yerdagi ref ga mongoose.model ichidagi bookning nomi yozilishi kerak
+// bu yerdagi ref ga mongoose.model ichidagi bookning nomi yozilishi kerak !
             ref: ''
         }
     ]
