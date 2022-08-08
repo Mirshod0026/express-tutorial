@@ -5,16 +5,15 @@ const authorSchem = {
   books: [
     {
       type: mongoose.Types.ObjectId,
-      // bu yerdagi ref ga mongoose.model ichidagi bookning nomi yozilishi kerak
-      ref: "",
+      ref: "Books",
     },
   ],
 };
 
-const authorModel = mongoose.model("Author", authorSchem);
+const AuthorModel = mongoose.model("Author", authorSchem);
 
 async function createAuthor(name) {
-  const author = new authorModel({
+  const author = new AuthorModel({
     name,
     books,
   });
@@ -23,13 +22,13 @@ async function createAuthor(name) {
 }
 
 async function getAuthor() {
-  const author = await authorModel.find();
+  const author = await AuthorModel.find();
 
   // console.log(author);
 }
 
 async function getAuthorById(id) {
-  const author = await authorModel.findById(id);
+  const author = await AuthorModel.findById(id);
 
   if (!author) {
     return console.log("Author not found!");
@@ -39,14 +38,14 @@ async function getAuthorById(id) {
 }
 
 async function updeteAuthorById() {
-  const author = await authorModel.findOneAndUpdate(filter, updete, {
+  const author = await AuthorModel.findOneAndUpdate(filter, updete, {
     new: true,
     upsert: true,
   });
 }
 
 async function deleteAuthorById() {
-  const author = authorModel
+  const author = AuthorModel
     .findOneAndDelete(filter)
     .then(console.log("Successful"))
     .catch((err) => next(err));

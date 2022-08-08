@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+
 const bookSchema = {
   name: String,
   author: [
@@ -36,3 +37,26 @@ async function getBookById(id) {
 
   console.log(book);
 }
+
+async function updateBook(id, name, authorId) {
+  const book = await BookModel.findById({ _id: id });
+
+  if (!book) {
+    return console.log('Book not found!');
+  }
+
+  book.name = name,
+  book.author.ObjectId = authorId
+
+  const bookSave = await book.save();
+
+  console.log(bookSave);
+}
+
+async function deleteBook(id) {
+  const result = await BookModel.deleteOne({ _id: id }); // findByIdAndRemove -- aynan delete bo'lgan bookni qaytaradi
+
+  return result
+}
+
+// updateBook()
