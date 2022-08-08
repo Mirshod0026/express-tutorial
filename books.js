@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const bookSchema = {
   name: String,
-  author: [
+  authors: [
     {
       type: mongoose.Types.ObjectId,
       ref: "Author",
@@ -11,7 +11,7 @@ const bookSchema = {
   ],
 };
 
-const BookModel = mongoose.model("Books", bookSchema);
+const BookModel = mongoose.model("Book", bookSchema);
 
 async function createBook(name, author) {
   const books = new BookModel({

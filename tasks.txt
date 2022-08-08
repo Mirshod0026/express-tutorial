@@ -1,5 +1,5 @@
-1. Mirshod aka -> Mongo implement setup
-2. Bobur -> Author va Book Schema va Model
+1. Mirshod aka -> Mongo implement setup + 
+2. Bobur -> Author va Book Schema va Model +
 
 3. CR Author -> Mirshod
 4. UD Books -> Mirshod
@@ -16,5 +16,5 @@ author {
 
 book {
   name:String
-  author:[Author]
+  authors:[Author]
 }
