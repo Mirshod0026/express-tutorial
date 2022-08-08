@@ -1,20 +1,12 @@
-1. Mirshod aka -> Mongo implement setup + 
-2. Bobur -> Author va Book Schema va Model +
+5. Routes va Controllerlarga ajratish projectni Mirshod || Bobur
 
-3. CR Author -> Mirshod
-4. UD Books -> Mirshod
+1.Books CR -> Mirshod
+2.Boks UP -> Bobur
 
-4. UD Author -> Bobur
-5. CR Books -> Bobur
+3. Add Book to Author -> Mirshod   POST authors/book 
+4. Add Author to Book -> Bobur     POST books/author
 
-// author not found, book not found, author exists, 
+6. GET Authors Mirshod aka (populate)
+7. GET Books Bobur (populate)
 
-author {
-  name:String
-  books:[Book]
-}
 
-book {
-  name:String
-  authors:[Author]
-}
