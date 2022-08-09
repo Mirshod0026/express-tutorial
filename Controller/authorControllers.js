@@ -40,7 +40,11 @@ async function createAuthor(name) {
 }
 
 async function getAuthorById(id) {
+<<<<<<< HEAD
   const author = await AuthorModel.findOne({_id: id});
+=======
+  const author = await AuthorModel.findOne({ _id: id });
+>>>>>>> 3ccd43f3ea5391e4a434456af5dbf82352d824a5
 
   return author;
 }
@@ -65,6 +69,7 @@ async function deleteAuthor(req,res) {
   console.log(id);
   const author = await getAuthorById(id);
 
+<<<<<<< HEAD
   if (!author) {
     return res.status(404).send("Author not found!");
   }
@@ -74,6 +79,9 @@ async function deleteAuthor(req,res) {
   res.status(200).send({ msg: "Successfully deleted", data: deletedAuthor });
 
   // return deleteAuthor;
+=======
+  return deletedAuthor;
+>>>>>>> 3ccd43f3ea5391e4a434456af5dbf82352d824a5
 }
 
 module.exports = {
@@ -83,4 +91,5 @@ module.exports = {
   getAuthorById,
   updateAuthor,
   deleteAuthor,
+  AuthorModel,
 };
