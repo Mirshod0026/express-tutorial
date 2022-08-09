@@ -12,7 +12,7 @@ const authorSchem = {
 
 const AuthorModel = mongoose.model("Author", authorSchem);
 
-async function getAuthors(req,res) {
+async function getAuthors(req, res) {
   const authors = await AuthorModel.find();
 
   res.status(201).send(authors);
@@ -33,7 +33,7 @@ async function createAuthor(name) {
 }
 
 async function getAuthorById(id) {
-  const author = await AuthorModel.findOne({ id });
+  const author = await AuthorModel.findOne({ _id: id });
 
   return author;
 }
@@ -49,7 +49,7 @@ async function updateAuthor(id, data) {
 async function deleteAuthor(id) {
   const deletedAuthor = await AuthorModel.deleteOne({ id });
 
-  return deleteAuthor;
+  return deletedAuthor;
 }
 
 module.exports = {
@@ -59,4 +59,5 @@ module.exports = {
   getAuthorById,
   updateAuthor,
   deleteAuthor,
+  AuthorModel,
 };

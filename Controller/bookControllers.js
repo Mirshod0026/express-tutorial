@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { getAuthorById } = require("./authorControllers");
+const { getAuthorById, AuthorModel } = require("./authorControllers");
 const bookSchema = {
   name: String,
   authors: [
@@ -13,7 +13,7 @@ const bookSchema = {
 const BookModel = mongoose.model("Book", bookSchema);
 
 async function getBookById(id) {
-  const book = await BookModel.findOne({ id });
+  const book = await BookModel.findOne({ _id: id });
 
   return book;
 }
@@ -64,7 +64,7 @@ async function addBookAuthor(req, res) {
   }
 
   const { book } = req.body;
-  await author.books.save(book);
+  await AuthorModel.author.books.insert(book);
 
   return res.status(201).send("Added book");
 }
