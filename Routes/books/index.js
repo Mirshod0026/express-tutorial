@@ -4,7 +4,14 @@ const {
   updateBook,
   deleteBook,
   addBookAuthor,
+  getBooks,
+  findBookByName,
 } = require("../../Controller/bookControllers");
+
+router
+  .route('/')
+  .get(async (req, res) => await getBooks(req, res))
+  .post(async (req, res) => await findBookByName(req, res));
 
 router
   .route("/:id")

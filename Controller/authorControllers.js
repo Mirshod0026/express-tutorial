@@ -12,16 +12,23 @@ const authorSchem = {
 
 const AuthorModel = mongoose.model("Author", authorSchem);
 
-async function getAuthors(req,res) {
+async function getAuthors(req, res) {
   const authors = await AuthorModel.find();
 
   res.status(201).send(authors);
 }
 
-async function findAuthorByName(name) {
+async function findAuthorByName(req, res) {
+  const { name } = req.body;
   const author = await AuthorModel.findOne({ name: name });
 
-  return author;
+  if (author) {
+    return res.status(400).send("Author is exists!");
+  }
+
+  const newAuthor = await createAuthor(name);
+
+  res.status(201).send(newAuthor);
 }
 
 async function createAuthor(name) {
@@ -33,23 +40,40 @@ async function createAuthor(name) {
 }
 
 async function getAuthorById(id) {
-  const author = await AuthorModel.findOne({ id });
+  const author = await AuthorModel.findOne({_id: id});
 
   return author;
 }
 
-async function updateAuthor(id, data) {
-  const { name, books } = data;
+async function updateAuthor(req, res) {
+  const { id } = req.params;
+  const { name, books } = req.body;
 
-  const updatedAuthor = await AuthorModel.updateOne({ id }, { name, books });
+  const author = await getAuthorById(id);
 
-  return updatedAuthor;
+  if (!author) {
+    return res.status(404).send("Author not found!");
+  }
+
+  const updatedAuthor = await AuthorModel.updateOne({ _id: id }, { name, books });
+
+  res.status(200).send({ msg: "Successfully updated", data: updatedAuthor });
 }
 
-async function deleteAuthor(id) {
-  const deletedAuthor = await AuthorModel.deleteOne({ id });
+async function deleteAuthor(req,res) {
+  const { id } = req.params;
+  console.log(id);
+  const author = await getAuthorById(id);
 
-  return deleteAuthor;
+  if (!author) {
+    return res.status(404).send("Author not found!");
+  }
+
+  const deletedAuthor = await AuthorModel.deleteOne({id});
+  
+  res.status(200).send({ msg: "Successfully deleted", data: deletedAuthor });
+
+  // return deleteAuthor;
 }
 
 module.exports = {

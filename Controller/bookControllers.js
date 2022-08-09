@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { getAuthorById } = require("./authorControllers");
+
 const bookSchema = {
   name: String,
   authors: [
@@ -12,16 +13,39 @@ const bookSchema = {
 
 const BookModel = mongoose.model("Book", bookSchema);
 
-async function getBookById(id) {
-  const book = await BookModel.findOne({ id });
-
-  return book;
-}
 
 async function getBooks(req, res) {
   const authors = await BookModel.find().populate("authors");
 
   res.status(201).send(authors);
+}
+
+async function createBook(name) {
+
+  const book = new BookModel({ name })
+  const bookSaved = await book.save();
+
+  return bookSaved;
+}
+
+async function findBookByName(req, res) {
+  const { name, authorId } = req.body;
+
+  const book = await BookModel.findOne({ name: name });
+
+  if (book) {
+    return res.status(400).send('Author is exsist!')
+  }
+
+  const newBook = await createBook(name);
+
+  res.status(200).send(newBook);
+}
+
+async function getBookById(id) {
+  const book = await BookModel.findOne({ id });
+
+  return book;
 }
 
 async function updateBook(req, res) {
@@ -68,4 +92,4 @@ async function addBookAuthor(req, res) {
 
   return res.status(201).send("Added book");
 }
-module.exports = { getBooks, updateBook, deleteBook, addBookAuthor };
+module.exports = { getBooks, updateBook, deleteBook, addBookAuthor, findBookByName };
