@@ -1,41 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getBookById,
   updateBook,
   deleteBook,
+  addBookAuthor,
 } = require("../../Controller/bookControllers");
 
 router
   .route("/:id")
-  .put(async (req, res) => {
-    const { id } = req.params;
-
-    const book = await getBookById(id);
-
-    if (!book) {
-      return res.status(404).send("Book not found!");
-    }
-
-    const updatedBook = await updateBook(id, req.body);
-
-    res.status(201).send({ msg: "Successfully updated", data: updatedBook });
-  })
-  .delete(async (req, res) => {
-    const { id } = req.params;
-
-    const book = await getBookById(id);
-
-    if (!book) {
-      return res.status(404).send("Book not found!");
-    }
-
-    const deletedBook = await deleteBook(id);
-
-    res.status(201).send({ msg: "Successfully deleted", data: deletedBook });
-  })
-  .post(async (req,res)=> {
-    
-  })
+  .put(async (req, res) => await updateBook(req, res))
+  .delete(async (req, res) => await deleteBook(req, res))
+  .post(async (req, res) => await addBookAuthor(req, res));
 
 module.exports = router;

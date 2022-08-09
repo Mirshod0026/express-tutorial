@@ -11,7 +11,7 @@ const {
 
 router
   .route("/")
-  .get(async (req, res) => await getAuthors())
+  .get(async (req, res) => await getAuthors(req,res))
   .post(async (req, res) => {
     const { name } = req.body;
     const author = await findAuthorByName(name); // bu fuksiya bizga authorni qaytarishi kerak

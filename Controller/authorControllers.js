@@ -12,7 +12,7 @@ const authorSchem = {
 
 const AuthorModel = mongoose.model("Author", authorSchem);
 
-async function getAuthors() {
+async function getAuthors(req,res) {
   const authors = await AuthorModel.find();
 
   res.status(201).send(authors);
@@ -39,9 +39,9 @@ async function getAuthorById(id) {
 }
 
 async function updateAuthor(id, data) {
-  const { name } = data;
+  const { name, books } = data;
 
-  const updatedAuthor = await AuthorModel.updateOne({ id }, { name });
+  const updatedAuthor = await AuthorModel.updateOne({ id }, { name, books });
 
   return updatedAuthor;
 }

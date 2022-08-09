@@ -5,5 +5,6 @@ const authorRoutes = require("./authors/index");
 const bookRoutes = require("./books/index");
 
 router.use("/authors", authorRoutes);
-router.use("/books", authorRoutes);
+router.use("/books", bookRoutes);
 
+module.exports = router;
