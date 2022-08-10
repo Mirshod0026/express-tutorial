@@ -55,8 +55,8 @@ async function updateAuthor(req, res) {
     return res.status(404).send("Author not found!");
   }
 
-  const authorName = await AuthorModel.findOne({name});
-  if (authorName){
+  const authorName = await AuthorModel.findOne({ name });
+  if (authorName) {
     return res.status(400).send("Author is exsise!");
   }
 
@@ -81,25 +81,29 @@ async function deleteAuthor(req, res) {
 
 async function addBookToAuthor(req, res) {
   const { id } = req.params
-  const { bookId } = req.body;
+  const { books } = req.body;
 
   // author bor yo'qligini tekshiraman 
   const author = await getAuthorById(id);
   if (!author) {
-    res.status(404).send("Author not found!");
+    return res.status(404).send("Author not found!");
   }
 
   // kitob bor yoqligini bazadan tekshiraman
-  const book = await getBookById(bookId);
+  const book = await getBookById(books);
   if (!book) {
-    res.status(404).send("Book not found!");
+    return res.status(404).send("Book not found!");
   }
 
   // agar ikkalasi mavjud bo'lsa va autorning books lar ro'yxatida bookId topilmasa 
   // autorning booksga bookni qo'shaman
-  
-  await author.books.push(book);
-  const updatedAuthor = await author.save()
+
+  await author.updateOne({ $push: { books: book } });
+  // await author.books.push(book);
+  const updatedAuthor = await author.save();
+
+  await book.authors.push(author);
+  await book.save();
 
   res.status(201).send({ msg: "Created Book", data: updateAuthor });
 
