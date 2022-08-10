@@ -1,10 +1,7 @@
 const mongoose = require("mongoose");
-<<<<<<< HEAD
 const { getAuthorById } = require("./authorControllers");
 
-=======
 const { getAuthorById, AuthorModel } = require("./authorControllers");
->>>>>>> 3ccd43f3ea5391e4a434456af5dbf82352d824a5
 const bookSchema = {
   name: String,
   authors: [
@@ -17,14 +14,12 @@ const bookSchema = {
 
 const BookModel = mongoose.model("Book", bookSchema);
 
-<<<<<<< HEAD
-=======
+
 async function getBookById(id) {
   const book = await BookModel.findOne({ _id: id });
 
   return book;
 }
->>>>>>> 3ccd43f3ea5391e4a434456af5dbf82352d824a5
 
 async function getBooks(req, res) {
   const authors = await BookModel.find().populate("authors");
