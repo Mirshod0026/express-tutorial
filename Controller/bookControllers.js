@@ -1,27 +1,27 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const { getAuthorById } = require("./authorControllers");
+const { getAuthorById } = require('./authorControllers');
 
 const bookSchema = {
   name: String,
   authors: [
     {
       type: mongoose.Types.ObjectId,
-      ref: "Author",
+      ref: 'Author',
     },
   ],
 };
 
-const BookModel = mongoose.model("Book", bookSchema);
+const BookModel = mongoose.model('Book', bookSchema);
 
 async function getBookById(id) {
-  const book = await BookModel.findById( id );
+  const book = await BookModel.findById(id);
 
   return book;
 }
 
 async function getBooks(req, res) {
-  const authors = await BookModel.find().populate("authors");
+  const authors = await BookModel.find().populate('authors');
 
   res.status(201).send(authors);
 }
@@ -39,18 +39,12 @@ async function findBookByName(req, res) {
   const book = await BookModel.findOne({ name: name });
 
   if (book) {
-    return res.status(400).send("Book is exsist!");
+    return res.status(400).send('Book is exsist!');
   }
 
   const newBook = await createBook(name, authors);
 
   res.status(200).send(newBook);
-}
-
-async function getBookById(id) {
-  const book = await BookModel.findOne({ id });
-
-  return book;
 }
 
 async function updateBook(req, res) {
@@ -60,28 +54,28 @@ async function updateBook(req, res) {
   const book = await getBookById(id);
 
   if (!book) {
-    return res.status(404).send("Book not found!");
+    return res.status(404).send('Book not found!');
   }
   const updatedBook = await BookModel.updateOne({ id }, { name });
 
   return res
     .status(201)
-    .send({ msg: "Successfully updated", data: updatedBook });
+    .send({ msg: 'Successfully updated', data: updatedBook });
 }
 
 async function deleteBook(req, res) {
   const { id } = req.params;
 
   const book = await getBookById(id);
-  console.log(book);
+
   if (!book) {
-    return res.status(404).send("Book not found!");
+    return res.status(404).send('Book not found!');
   }
   const deletedBook = await BookModel.deleteOne({ _id: id });
 
   return res
     .status(201)
-    .send({ msg: "Successfully deleted", data: deletedBook });
+    .send({ msg: 'Successfully deleted', data: deletedBook });
 }
 
 async function addBookAuthor(req, res) {
@@ -89,12 +83,19 @@ async function addBookAuthor(req, res) {
   const author = getAuthorById(id);
 
   if (!author) {
-    return res.status(404).send("Author not found!");
+    return res.status(404).send('Author not found!');
   }
 
   const { book } = req.body;
   // await AuthorModel.author.books.insert(book);
 
-  return res.status(201).send("Added book");
+  return res.status(201).send('Added book');
 }
-module.exports = { getBooks, getBookById, updateBook, deleteBook, addBookAuthor, findBookByName };
+module.exports = {
+  getBooks,
+  getBookById,
+  updateBook,
+  deleteBook,
+  addBookAuthor,
+  findBookByName,
+};
