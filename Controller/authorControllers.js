@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const { getBookById, BookModel } = require("./bookControllers");
-
+const bookSchema = require("./bookControllers");
+const { getBookById } = require("./bookControllers");
 
 const authorSchem = {
   name: String,
@@ -15,26 +15,26 @@ const authorSchem = {
 const AuthorModel = mongoose.model("Author", authorSchem);
 
 async function getAuthors(req, res) {
-  const authors = await AuthorModel.find();
+  const authors = await AuthorModel.find().populate('books');
 
   res.status(201).send(authors);
 }
 
 async function findAuthorByName(req, res) {
-  const { name } = req.body;
+  const { name, books } = req.body;
   const author = await AuthorModel.findOne({ name: name });
 
   if (author) {
     return res.status(400).send("Author is exists!");
   }
 
-  const newAuthor = await createAuthor(name);
+  const newAuthor = await createAuthor(name, books);
 
   res.status(201).send(newAuthor);
 }
 
-async function createAuthor(name) {
-  const newAuthor = new AuthorModel({ name: name });
+async function createAuthor(name, books) {
+  const newAuthor = new AuthorModel({ name, books });
 
   await newAuthor.save();
 
@@ -43,21 +43,22 @@ async function createAuthor(name) {
 
 async function getAuthorById(id) {
   const author = await AuthorModel.findOne({ _id: id });
-  
+
   return author;
 }
 
 async function updateAuthor(req, res) {
   const { id } = req.params;
-  console.log(id);
   const { name } = req.body;
-  console.log(name);
 
   const author = await getAuthorById(id);
-  console.log(author);
-
   if (!author) {
     return res.status(404).send("Author not found!");
+  }
+
+  const authorName = AuthorModel.findOne(name);
+  if (authorName){
+    return res.status(400).send("Author is exsise!");
   }
 
   const updatedAuthor = await AuthorModel.updateOne({ _id: id }, { name });
@@ -95,12 +96,14 @@ async function addBookToAuthor(req, res) {
     res.status(404).send("Book not found!");
   }
 
+  // agar ikkalasi mavjud bo'lsa va autorning books lar ro'yxatida bookId topilmasa 
+  // autorning booksga bookni qo'shaman
+  
+  await author.books.push(book);
+  const updatedAuthor = await author.save()
 
-  // agar ikkalasi mavjud bo'lsa autorning booksga ro'yxatiga bookni qo'shaman
-  const addetBook = await author.books.push(book);
-  addetBook.save();
+  res.status(201).send({ msg: "Created Book", data: updateAuthor });
 
-  res.status(201).send(addetBook);
 }
 
 module.exports = {
