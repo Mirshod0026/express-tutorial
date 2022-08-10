@@ -8,6 +8,7 @@ const {
   getAuthorById,
   updateAuthor,
   deleteAuthor,
+  addBookToAuthor
 } = require("../../Controller/authorControllers");
 
 router
@@ -17,8 +18,10 @@ router
 
 router
   .route("/:id")
+  // .get(async (req, res) => await getAuthorById(req, res))
   .put(async (req, res) => await updateAuthor(req, res)) // Xato Id kiritsam if() shartiga tushmayapti.
-  .delete(async (req, res) => await deleteAuthor(req, res));
+  .delete(async (req, res) => await deleteAuthor(req, res))
+  .post(async (req, res) => await addBookToAuthor(req, res));
 
 
 module.exports = router;

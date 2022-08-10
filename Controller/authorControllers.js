@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const { getBookById, BookModel } = require("./bookControllers");
+
 
 const authorSchem = {
   name: String,
@@ -40,48 +42,65 @@ async function createAuthor(name) {
 }
 
 async function getAuthorById(id) {
-<<<<<<< HEAD
-  const author = await AuthorModel.findOne({_id: id});
-=======
   const author = await AuthorModel.findOne({ _id: id });
->>>>>>> 3ccd43f3ea5391e4a434456af5dbf82352d824a5
-
+  
   return author;
 }
 
 async function updateAuthor(req, res) {
   const { id } = req.params;
-  const { name, books } = req.body;
+  console.log(id);
+  const { name } = req.body;
+  console.log(name);
 
   const author = await getAuthorById(id);
+  console.log(author);
 
   if (!author) {
     return res.status(404).send("Author not found!");
   }
 
-  const updatedAuthor = await AuthorModel.updateOne({ _id: id }, { name, books });
+  const updatedAuthor = await AuthorModel.updateOne({ _id: id }, { name });
 
   res.status(200).send({ msg: "Successfully updated", data: updatedAuthor });
 }
 
-async function deleteAuthor(req,res) {
+async function deleteAuthor(req, res) {
   const { id } = req.params;
-  console.log(id);
   const author = await getAuthorById(id);
 
-<<<<<<< HEAD
   if (!author) {
     return res.status(404).send("Author not found!");
   }
 
-  const deletedAuthor = await AuthorModel.deleteOne({id});
-  
+  const deletedAuthor = await AuthorModel.deleteOne({ _id: id });
+
   res.status(200).send({ msg: "Successfully deleted", data: deletedAuthor });
 
-  // return deleteAuthor;
-=======
-  return deletedAuthor;
->>>>>>> 3ccd43f3ea5391e4a434456af5dbf82352d824a5
+}
+
+async function addBookToAuthor(req, res) {
+  const { id } = req.params
+  const { bookId } = req.body;
+
+  // author bor yo'qligini tekshiraman 
+  const author = await getAuthorById(id);
+  if (!author) {
+    res.status(404).send("Author not found!");
+  }
+
+  // kitob bor yoqligini bazadan tekshiraman
+  const book = await getBookById(bookId);
+  if (!book) {
+    res.status(404).send("Book not found!");
+  }
+
+
+  // agar ikkalasi mavjud bo'lsa autorning booksga ro'yxatiga bookni qo'shaman
+  const addetBook = await author.books.push(book);
+  addetBook.save();
+
+  res.status(201).send(addetBook);
 }
 
 module.exports = {
@@ -91,5 +110,5 @@ module.exports = {
   getAuthorById,
   updateAuthor,
   deleteAuthor,
-  AuthorModel,
+  addBookToAuthor
 };
