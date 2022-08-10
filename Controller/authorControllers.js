@@ -14,7 +14,7 @@ const authorSchem = {
 const AuthorModel = mongoose.model("Author", authorSchem);
 
 async function getAuthors(req, res) {
-  const authors = await AuthorModel.find().populate('books');
+  const authors = await AuthorModel.find().populate("books");
 
   res.status(201).send(authors);
 }
@@ -41,7 +41,7 @@ async function createAuthor(name, books) {
 }
 
 async function getAuthorById(id) {
-  const author = await AuthorModel.findOne({ _id: id });
+  const author = await AuthorModel.findOne({_id:id});
 
   return author;
 }
@@ -55,8 +55,8 @@ async function updateAuthor(req, res) {
     return res.status(404).send("Author not found!");
   }
 
-  const authorName = await AuthorModel.findOne({name});
-  if (authorName){
+  const authorName = await AuthorModel.findOne({ name });
+  if (authorName) {
     return res.status(400).send("Author is exsise!");
   }
 
@@ -76,14 +76,13 @@ async function deleteAuthor(req, res) {
   const deletedAuthor = await AuthorModel.deleteOne({ _id: id });
 
   res.status(200).send({ msg: "Successfully deleted", data: deletedAuthor });
-
 }
 
 async function addBookToAuthor(req, res) {
-  const { id } = req.params
+  const { id } = req.params;
   const { bookId } = req.body;
 
-  // author bor yo'qligini tekshiraman 
+  // author bor yo'qligini tekshiraman
   const author = await getAuthorById(id);
   if (!author) {
     res.status(404).send("Author not found!");
@@ -95,14 +94,13 @@ async function addBookToAuthor(req, res) {
     res.status(404).send("Book not found!");
   }
 
-  // agar ikkalasi mavjud bo'lsa va autorning books lar ro'yxatida bookId topilmasa 
+  // agar ikkalasi mavjud bo'lsa va autorning books lar ro'yxatida bookId topilmasa
   // autorning booksga bookni qo'shaman
-  
+
   await author.books.push(book);
-  const updatedAuthor = await author.save()
+  const updatedAuthor = await author.save();
 
   res.status(201).send({ msg: "Created Book", data: updateAuthor });
-
 }
 
 module.exports = {
@@ -112,5 +110,5 @@ module.exports = {
   getAuthorById,
   updateAuthor,
   deleteAuthor,
-  addBookToAuthor
+  addBookToAuthor,
 };
