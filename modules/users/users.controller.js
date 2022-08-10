@@ -19,7 +19,14 @@ class UserController {
         data: null,
       });
     }
+
+    /*
+    
+    
     // logic of hashing password #TODO bollarga o'rganishni vazifa qilib beraman
+    
+    
+    */
 
     // logic of create user
     const user = await UserService.createUser(username, email, password, role);

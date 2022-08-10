@@ -19,6 +19,10 @@ class UserService {
   async getUserByEmail(email) {
     return await UserModel.findOne({ email });
   }
+
+  async checkPassword(email, password) {
+    return await UserModel.findOne({ email, password });
+  }
 }
 
 module.exports.UserService = new UserService();
