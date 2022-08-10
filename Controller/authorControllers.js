@@ -26,13 +26,13 @@ async function findAuthorByName(req, res) {
     return res.status(400).send("Author is exists!");
   }
 
-  const newAuthor = await createAuthor(name);
+  const newAuthor = await createAuthor(name, books);
 
   res.status(201).send(newAuthor);
 }
 
-async function createAuthor(name) {
-  const newAuthor = new AuthorModel({ name: name });
+async function createAuthor(name, books) {
+  const newAuthor = new AuthorModel({ name, books });
 
   await newAuthor.save();
 
