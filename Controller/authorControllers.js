@@ -1,20 +1,31 @@
-const mongoose = require("mongoose");
-const { getBookById } = require("./bookControllers");
+const mongoose = require('mongoose');
+
+module.exports = {
+  getAuthors,
+  getAuthorById,
+  createAuthor,
+  updateAuthor,
+  deleteAuthor,
+  findAuthorByName,
+  addBookToAuthor,
+};
+
+const { getBookById } = require('./bookControllers');
 
 const authorSchem = {
   name: String,
   books: [
     {
       type: mongoose.Types.ObjectId,
-      ref: "Book",
+      ref: 'Book',
     },
   ],
 };
 
-const AuthorModel = mongoose.model("Author", authorSchem);
+const AuthorModel = mongoose.model('Author', authorSchem);
 
 async function getAuthors(req, res) {
-  const authors = await AuthorModel.find().populate("books");
+  const authors = await AuthorModel.find().populate('books');
 
   res.status(201).send(authors);
 }
@@ -24,7 +35,7 @@ async function findAuthorByName(req, res) {
   const author = await AuthorModel.findOne({ name: name });
 
   if (author) {
-    return res.status(400).send("Author is exists!");
+    return res.status(400).send('Author is exists!');
   }
 
   const newAuthor = await createAuthor(name, books);
@@ -41,7 +52,7 @@ async function createAuthor(name, books) {
 }
 
 async function getAuthorById(id) {
-  const author = await AuthorModel.findOne({_id:id});
+  const author = await AuthorModel.findOne({ _id: id });
 
   return author;
 }
@@ -52,17 +63,17 @@ async function updateAuthor(req, res) {
 
   const author = await getAuthorById(id);
   if (!author) {
-    return res.status(404).send("Author not found!");
+    return res.status(404).send('Author not found!');
   }
 
   const authorName = await AuthorModel.findOne({ name });
   if (authorName) {
-    return res.status(400).send("Author is exsise!");
+    return res.status(400).send('Author is exsise!');
   }
 
   const updatedAuthor = await AuthorModel.updateOne({ _id: id }, { name });
 
-  res.status(200).send({ msg: "Successfully updated", data: updatedAuthor });
+  res.status(200).send({ msg: 'Successfully updated', data: updatedAuthor });
 }
 
 async function deleteAuthor(req, res) {
@@ -70,28 +81,28 @@ async function deleteAuthor(req, res) {
   const author = await getAuthorById(id);
 
   if (!author) {
-    return res.status(404).send("Author not found!");
+    return res.status(404).send('Author not found!');
   }
 
   const deletedAuthor = await AuthorModel.deleteOne({ _id: id });
 
-  res.status(200).send({ msg: "Successfully deleted", data: deletedAuthor });
+  res.status(200).send({ msg: 'Successfully deleted', data: deletedAuthor });
 }
 
 async function addBookToAuthor(req, res) {
-  const { id } = req.params
+  const { id } = req.params;
   const { books } = req.body;
 
   // author bor yo'qligini tekshiraman
   const author = await getAuthorById(id);
   if (!author) {
-    return res.status(404).send("Author not found!");
+    return res.status(404).send('Author not found!');
   }
 
   // kitob bor yoqligini bazadan tekshiraman
   const book = await getBookById(books);
   if (!book) {
-    return res.status(404).send("Book not found!");
+    return res.status(404).send('Book not found!');
   }
 
   // agar ikkalasi mavjud bo'lsa va autorning books lar ro'yxatida bookId topilmasa
@@ -104,15 +115,5 @@ async function addBookToAuthor(req, res) {
   await book.authors.push(author);
   await book.save();
 
-  res.status(201).send({ msg: "Created Book", data: updateAuthor });
+  res.status(201).send({ msg: 'Created Book', data: updateAuthor });
 }
-
-module.exports = {
-  getAuthors,
-  findAuthorByName,
-  createAuthor,
-  getAuthorById,
-  updateAuthor,
-  deleteAuthor,
-  addBookToAuthor,
-};

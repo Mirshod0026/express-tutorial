@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 const {
   updateBook,
@@ -6,17 +6,17 @@ const {
   addAuthortoBook,
   getBooks,
   findBookByName,
-} = require("../../Controller/bookControllers");
+} = require('../../Controller/bookControllers');
 
 router
-  .route("/")
+  .route('/')
   .get(async (req, res) => await getBooks(req, res))
   .post(async (req, res) => await findBookByName(req, res));
 
 router
-  .route("/:id")
+  .route('/:id')
   .put(async (req, res) => await updateBook(req, res))
   .delete(async (req, res) => await deleteBook(req, res))
-  .post(async (req, res) => await addAuthortoBook(req, res));
+  .post(async (req, res) => addAuthortoBook(req, res));
 
 module.exports = router;
