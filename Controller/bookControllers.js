@@ -15,7 +15,7 @@ const bookSchema = {
 const BookModel = mongoose.model("Book", bookSchema);
 
 async function getBookById(id) {
-  const book = await BookModel.findOne({ _id: id });
+  const book = await BookModel.findById( id );
 
   return book;
 }
@@ -73,11 +73,11 @@ async function deleteBook(req, res) {
   const { id } = req.params;
 
   const book = await getBookById(id);
-
+  console.log(book);
   if (!book) {
     return res.status(404).send("Book not found!");
   }
-  const deletedBook = await BookModel.deleteOne({ id });
+  const deletedBook = await BookModel.deleteOne({ _id: id });
 
   return res
     .status(201)

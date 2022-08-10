@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const bookSchema = require("./bookControllers");
 const { getBookById } = require("./bookControllers");
 
 const authorSchem = {
@@ -56,7 +55,7 @@ async function updateAuthor(req, res) {
     return res.status(404).send("Author not found!");
   }
 
-  const authorName = AuthorModel.findOne(name);
+  const authorName = await AuthorModel.findOne({name});
   if (authorName){
     return res.status(400).send("Author is exsise!");
   }
